@@ -1,0 +1,183 @@
+<%- include('./head') %>
+
+<body>
+
+
+
+  <header class="navbar">
+
+
+    <div class="list_container">
+
+      <a href="" class="">
+        <img class="" src="https://i.ibb.co/W6ZXdqN/2021-10-26-16h20-21.png" alt="" />
+      </a>
+
+
+    </div>
+
+
+
+
+    <div class="list_container">
+
+
+      <ul class="nav-list">
+
+        <li class="list">
+          <a href="/">
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="/post">
+            <span>Posts</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="/category">
+            <span>Category</span>
+          </a>
+        </li>
+
+
+      </ul>
+    </div>
+
+    <div class="list_container">
+
+      <div class="box">
+        <form name="search">
+          <input type="text" class="input" name="txt" onmouseout="this.value = ''; this.blur();">
+        </form>
+        <i class="fa fa-search" aria-hidden="true"></i>
+
+      </div>
+
+    </div>
+
+
+  </header>
+
+
+
+  <style>
+    .box {
+      position: relative;
+      padding-top: 8px;
+    }
+
+
+    .input {
+      padding: 10px;
+      width: 53px;
+      height: 40px;
+      background: none;
+      border: 4px solid #7e7e839c;
+      border-radius: 50px;
+      box-sizing: border-box;
+      font-family: Comic Sans MS;
+      font-size: 26px;
+      color: #ffd52d;
+      outline: none;
+      transition: .5s;
+    }
+
+    .box:hover input {
+      width: 350px;
+      background: #3b3640;
+      border-radius: 10px;
+    }
+
+    .box i {
+      position: absolute;
+      /* transform: translate(-50%,-50%); */
+      font-size: 26px;
+      /* color: #ffd52d; */
+      transition: .2s;
+      z-index: 111111;
+      height: 26px;
+      right: 17px;
+      top: 15px;
+      width: 22px;
+    }
+
+    .box:hover i {
+      opacity: 0;
+      z-index: 1;
+    }
+
+
+
+    .navbar {
+
+      width: 100%;
+      height: 20%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      gap: 42px;
+      border: 1px solid #eee;
+    }
+
+
+
+    .list_container .search {
+
+      padding-top: 15px;
+      margin-left: 12px;
+    }
+
+    .nav-list .list span {
+      text-decoration: none;
+    }
+
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-list {
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 170px;
+      padding-top: 17px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      text-decoration: none;
+    }
+
+
+
+
+    .header-links li span::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      bottom: 2px;
+      left: -4px;
+      right: -4px;
+      display: block;
+      height: 6px;
+    }
+
+    .header-links li.active span::before {
+      background-color: #fcae04;
+    }
+
+    .header-links li:not(.active):hover span::before {
+      background-color: #ccc;
+    }
+  </style>
+</body>
+
+</html>

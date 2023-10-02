@@ -1,0 +1,48 @@
+import express from "express";
+import path from "path";
+import { getPosts, insertPosts } from './home.js';
+import mysql from "mysql2";
+import bodyParser from 'body-parser';
+
+const app = express();
+
+const port = 5000;
+
+// Use bodyParser middleware to parse JSON and form data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static('public'));
+
+app.set('view engine', 'ejs');
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'blog',
+});
+
+
+connection.connect();
+
+app.get('/', getPosts);
+
+
+app.get('/post', (req, res) => {
+    
+    res.render('post');
+  });
+
+app.post('/post', insertPosts);
+
+
+
+app.get('/category', (req, res) => {
+    res.render('category');
+});
+
+app.listen(port, () => console.log(`The server is running on port ${port}`));
+
+// You should also consider adding code to properly close the database connection when your application exits.
+// connection.end();
