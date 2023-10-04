@@ -10,9 +10,16 @@ const port = 5000;
 
 // Use bodyParser middleware to parse JSON and form data
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static('public'));
+
+
+const __dirname = path.resolve();
+
+
+
+app.use(express.static(__dirname));
 
 app.set('view engine', 'ejs');
 

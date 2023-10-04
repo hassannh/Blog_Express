@@ -40,12 +40,16 @@ export function getPosts(req, res) {
 
 
   export function insertPosts(req, res) {
-    const { title, description, author, picture } = req.body;
+    const { title, description, author, picture ,category_name } = req.body;
   
-    const sql = 'INSERT INTO post (title, description, author, picture) VALUES (?, ?, ?, ?)';
-    const values = [title, description, author, picture];
+    const post = 'INSERT INTO post (title, description, author, picture, category_name) VALUES (?, ?, ?, ?, ?)';
+
+    const category = 'INSERT IGNORE INTO category (category_name) VALUES (?)';
+    const categoryValues = [category_name];
+
+    const values = [title, description, author, picture ,categoryValues];
   
-    connection.query(sql, values, (err, result) => {
+    connection.query(post, values, (err, result) => {
       if (err) {
         console.error('Error inserting data:', err);
         res.status(500).send('Error inserting data');
