@@ -49,6 +49,14 @@ app.get('/category', (req, res) => {
     res.render('category');
 });
 
+
+app.get('/postDetails', (req, res) => {
+    res.render('postDetails');
+});
+
+
+
+
 app.listen(port, () => console.log(`The server is running on port ${port}`));
 
 // You should also consider adding code to properly close the database connection when your application exits.
