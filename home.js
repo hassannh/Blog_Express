@@ -61,12 +61,49 @@ export function getPosts(req, res) {
   
   }
 
+
+
+ 
+
 //////////////// update function ///////////////
 
 
 
 
+/////////////////////// category ////////////////
 
+
+
+export function insertCategory(req, res){
+  const {category_name } = req.body;
+  const category = 'INSERT INTO category (category_name) VALUES (?)';
+  const values = [category_name];
+
+  connection.query(category, values, (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err);
+      res.status(500).send('Error inserting data');
+    } else {
+      console.log('Data inserted successfully:', result);
+      res.redirect('/category');
+    }
+  });
+    
+}
+
+
+export function getCategory(req ,res){
+
+  console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
+  connection.query('SELECT * FROM category', (err, categories, fields) => {
+    if (err) throw err;
+
+    console.log(categories);
+
+    res.render('category', { categories });
+  });
+}
 
 
 

@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import { getPosts, insertPosts } from './home.js';
+import { getPosts, insertPosts ,insertCategory , getCategory} from './home.js';
 import mysql from "mysql2";
 import bodyParser from 'body-parser';
 
@@ -16,10 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const __dirname = path.resolve();
-
-
-
 app.use(express.static(__dirname));
+
+
+
 
 app.set('view engine', 'ejs');
 
@@ -45,9 +45,16 @@ app.post('/post', insertPosts);
 
 
 
-app.get('/category', (req, res) => {
-    res.render('category');
-});
+
+// app.get('/category', (req, res) => {
+//     res.render('category');
+// });
+
+app.get('/category', getCategory);
+
+app.post('/category', insertCategory);
+
+
 
 
 app.get('/postDetails', (req, res) => {
