@@ -31,14 +31,14 @@
 
  
 
-        <form class="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-auto mt-5" action="/post" method="post">
+        <form class="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-auto mt-5" action="/post" method="post" enctype="multipart/form-data">
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label class="" for="grid-first-name">
                 Title
               </label>
-              <input name="title" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Title">
-              <p class="text-red-500 text-xs italic">Please fill out this field.</p>
+              <input name="title" class="appearance-none block w-full bg-gray-200 text-gray-700  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Title">
+              <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
             </div>
             <div class="w-full md:w-1/2 px-3">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -54,13 +54,8 @@
                         <div class="flex items-center space-x-1 sm:pr-4">
                             
                             
-                            <input type="file" name="picture" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <!-- <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z"/>
-                                 </svg>
-                                <span class="sr-only">Add emoji</span>
-                            </button> -->
+                            <input type="file" name="image" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                           
                         </div>
                       
                     </div>
@@ -81,12 +76,17 @@
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Category
                 </label>
-                <input name="category_name" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Category">
+                <select class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="category_id">
+                    <% categories.forEach(category=> { %>
+
+                    <option value="<%= category.category_id %>"><%= category.category_name%></option>
+                    
+                    <%}); %>
+                    
+                  </select>
                 <p class="text-gray-600 text-xs italic">Make sure to add category</p>
               </div>
             </div>
-      
-      
             <button type="submit" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 Publish post
             </button>

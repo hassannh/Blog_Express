@@ -1,4 +1,5 @@
 
+import { render } from "ejs";
 import mysql from "mysql2"
 
 
@@ -20,34 +21,55 @@ connection.connect()
 
 
 
-//////////////// get function ///////////////
-
-
 export function getPosts(req, res) {
     connection.query('SELECT post.*, category.* FROM post INNER JOIN post_category ON post.id = post_category.post_id INNER JOIN category ON post_category.category_id = category.id;', (err, posts, fields) => {
       if (err) throw err;
+    
   
-      console.log(posts);
+      console.log(`Number of posts: ${posts.length}`);
+    console.log(posts);
   
-      res.render('index', { posts }); // 'index' should be the name of EJS template
+      res.render('index', { posts }); 
     });
   }
+
+
+
+  export  function getOnePost(req, res){
+    console.log(res.params);
+    const postId = req.params.postId;
+
+    connection.query(`SELECT * FROM post WHERE id = ${postId}`, (err, post, fields) => {
+      if (err) throw err;
+
+      console.log(post)
+      res.render('postDetails', {post: post[0]})
+      
+    })
+   
+  }
+
+
+  // function getCategoryID(categoryName, callback) {
+  //   const sql = 'SELECT id FROM category WHERE category_name = ?';
+  //   connection.query(sql, [categoryName], (err, results) => {
+  //     if (err) {
+  //       callback(err, null);
+  //     } else if (results.length === 0) {
+  //       callback('Category not found', null);
+  //     } else {
+  //       const categoryId = results[0].id;
+  //       callback(null, categoryId);
+  //     }
+  //   });
+  // }
   
-
-
-  //////////////// insert function ///////////////
-
-
 
   export function insertPosts(req, res) {
-    const { title, description, author, picture ,category_name } = req.body;
+    const { title, description, author, picture, category_id } = req.body;
   
-    const post = 'INSERT INTO post (title, description, author, picture, category_name) VALUES (?, ?, ?, ?, ?)';
-
-    const category = 'INSERT IGNORE INTO category (category_name) VALUES (?)';
-    const categoryValues = [category_name];
-
-    const values = [title, description, author, picture ,categoryValues];
+    const post = 'INSERT INTO post (title, description, author, picture, category_id) VALUES (?, ?, ?, ?, ?)';
+    const values = [title, description, author, picture, category_id];
   
     connection.query(post, values, (err, result) => {
       if (err) {
@@ -58,20 +80,15 @@ export function getPosts(req, res) {
         res.redirect('/');
       }
     });
-  
   }
+  
 
-
+/////////////////////////////////////POST CRUD END ////////////////////////////////////
 
  
 
-//////////////// update function ///////////////
 
-
-
-
-/////////////////////// category ////////////////
-
+/////////////////////////////////////category CRUD START ////////////////////////////////////
 
 
 export function insertCategory(req, res){
@@ -94,14 +111,26 @@ export function insertCategory(req, res){
 
 export function getCategory(req ,res){
 
-  console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
+  
   connection.query('SELECT * FROM category', (err, categories, fields) => {
     if (err) throw err;
 
     console.log(categories);
 
     res.render('category', { categories });
+  });
+}
+
+
+export function getAllCategories(req ,res){
+
+  
+  connection.query('SELECT * FROM category', (err, categories, fields) => {
+    if (err) throw err;
+
+    console.log(categories);
+
+    res.render('post', { categories });
   });
 }
 

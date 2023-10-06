@@ -18,6 +18,8 @@
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 
 </head>
 <body class="bg-gray-200 font-sans leading-normal tracking-normal">
@@ -26,7 +28,7 @@
 
 
 
-<form class="mt-8 ml-5 mb-6" style="position: relative; right: -496px;" method="post" action="/category">
+<form class="mt-8 ml-5 mb-6" style="position: relative; right: -496px;right: -496px;" method="post" action="/category">
 	<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
 	  <label for="Category Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Name</label>
 	  <input type="text" name="category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
@@ -41,8 +43,8 @@
 
  
 
-  <div class="relative overflow-x-auto shadow-md mb-6" style="position: relative; left: 756px;">
-    <table class="w-481 text-sm text-left text-gray-500 dark:text-gray-400">
+  <div class="overflow-x-auto shadow-md mb-6" style="position: relative;left: 526px;width: 920px;border: solid 1px;">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
@@ -66,7 +68,12 @@
                     <%= category.category_name %>
                 </td>
                 <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                    Laptop
+                  <a href=""><i class="fa-solid fa-plus"></i></a>
+                  <a href=""><i class="fa-solid fa-wrench"></i></a>
+                  <a href=""><i class="fa-solid fa-trash-can"></i></a>
+                  
+                  
+                  
                 </td>
                
             </tr>
@@ -105,7 +112,7 @@
 			</div>
 		</div>
 	</footer>
-
+  <script src="https://kit.fontawesome.com/75fbb3b260.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
 	<script>

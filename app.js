@@ -1,8 +1,25 @@
 import express from "express";
 import path from "path";
-import { getPosts, insertPosts ,insertCategory , getCategory} from './home.js';
+import { getPosts, insertPosts ,insertCategory , getCategory ,getOnePost ,getAllCategories} from './home.js';
 import mysql from "mysql2";
 import bodyParser from 'body-parser';
+import multer from 'multer';
+
+
+const storage = multer.diskStorage({
+    destination: (req, file,cb)=>{
+
+    cb(null,'uploadedpic')
+},
+filename: (req,file,cb)=>{
+
+    console.log(file);
+
+    cb(null, path.extname(file.originalname))
+}
+})
+
+const upload = multer({storage: storage})
 
 const app = express();
 
@@ -33,15 +50,20 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+
+
+
+
+
+
+
+
 app.get('/', getPosts);
 
 
-app.get('/post', (req, res) => {
-    
-    res.render('post');
-  });
+app.get('/post',getAllCategories);
 
-app.post('/post', insertPosts);
+app.post('/post', upload.single("image") , insertPosts);
 
 
 
@@ -57,9 +79,13 @@ app.post('/category', insertCategory);
 
 
 
-app.get('/postDetails', (req, res) => {
-    res.render('postDetails');
-});
+// app.get('/postDetails', (req, res) => {
+//     res.render('postDetails');
+// });
+
+
+
+app.get('/postDetails/:postId', getOnePost);
 
 
 
