@@ -58,10 +58,11 @@ connection.connect();
 
 
 
+app.get('/:cat', getPosts);
 app.get('/', getPosts);
 
 
-app.get('/post',getAllCategories);
+app.get('/post',getAllCategories );
 
 app.post('/post', upload.single("image") , insertPosts);
 
@@ -91,6 +92,8 @@ app.get('/postDetails/:postId', getOnePost);
 
 
 app.listen(port, () => console.log(`The server is running on port ${port}`));
+
+
 
 // You should also consider adding code to properly close the database connection when your application exits.
 // connection.end();

@@ -76,14 +76,16 @@
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Category
                 </label>
-                <select class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="category_id">
+                <select id="categorySelect" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="category_id">
                     <% categories.forEach(category=> { %>
 
-                    <option value="<%= category.category_id %>"><%= category.category_name%></option>
-                    
+                    <option value="<%= category.category_name %>"><%= category.category_name%></option>
+
                     <%}); %>
                     
                   </select>
+                  <div id="selectedCategories"></div>
+
                 <p class="text-gray-600 text-xs italic">Make sure to add category</p>
               </div>
             </div>
@@ -186,4 +188,30 @@
   
 
 </body>
+
+<script>
+    const categorySelect = document.getElementById("categorySelect");
+    const selectedCategoriesDiv = document.getElementById("selectedCategories");
+    const selectedCategories = [];
+  
+    categorySelect.addEventListener("change", function () {
+        // console.log("hhh");
+      const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+      const categoryValue = selectedOption.value;
+      console.log(categoryValue);
+      const categoryName = selectedOption.innerText;
+  
+      // Check if the category has already been selected
+      if (!selectedCategories.includes(categoryValue)) {
+        selectedCategories.push(categoryValue);
+  
+        // Update the selected categories in the div
+        selectedCategoriesDiv.innerHTML = selectedCategories
+          .map((categoryValue) => {
+            return `<div>${categoryValue}</div>`;
+          })
+          .join("");
+      }
+    });
+  </script>
 </html>

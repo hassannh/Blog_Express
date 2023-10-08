@@ -21,17 +21,66 @@ connection.connect()
 
 
 
-export function getPosts(req, res) {
-    connection.query('SELECT post.*, category.* FROM post INNER JOIN post_category ON post.id = post_category.post_id INNER JOIN category ON post_category.category_id = category.id;', (err, posts, fields) => {
-      if (err) throw err;
+// export function getPosts(req, res) {
+//     connection.query('SELECT post.*, category.* FROM post INNER JOIN post_category ON post.id = post_category.post_id INNER JOIN category ON post_category.category_id = category.id;', (err, posts, fields) => {
+//       if (err) throw err;
     
   
-      console.log(`Number of posts: ${posts.length}`);
-    console.log(posts);
+//       console.log(`Number of posts: ${posts.length}`);
+//     console.log(posts);
   
-      res.render('index', { posts }); 
-    });
+//       res.render('index', { posts }); 
+//     });
+//   }
+
+
+
+export function getPosts(req, res ) {
+
+  console.log("im in");
+
+  let query = 'SELECT post.*, category.* FROM post INNER JOIN post_category ON post.id = post_category.post_id INNER JOIN category ON post_category.category_id = category.id';
+
+  
+  if (req.params.cat) {
+      query += ` WHERE category.category_name = '${req.params.cat}'`;
   }
+
+
+  const searchValue = req.query.search;
+  
+  if (searchValue) {
+    console.log(searchValue);
+
+    if (req.params.cat = searchValue) {
+      query += ` AND (post.title LIKE '%${searchValue}%' OR post.description LIKE '%${searchValue}%')`;
+    } else {
+      query += ` WHERE post.title LIKE '%${searchValue}%' OR post.description LIKE '%${searchValue}%'`;
+    }
+  }
+
+  connection.query(query, (err, posts, fields) => {
+      if (err) throw err;
+
+
+      posts.forEach(post => {
+        if (post.date instanceof Date) {
+          post.date = post.date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          });
+        }
+      });
+         
+      res.render('index', { posts });
+  });
+}
+
+
+
+
 
 
 
@@ -50,19 +99,6 @@ export function getPosts(req, res) {
   }
 
 
-  // function getCategoryID(categoryName, callback) {
-  //   const sql = 'SELECT id FROM category WHERE category_name = ?';
-  //   connection.query(sql, [categoryName], (err, results) => {
-  //     if (err) {
-  //       callback(err, null);
-  //     } else if (results.length === 0) {
-  //       callback('Category not found', null);
-  //     } else {
-  //       const categoryId = results[0].id;
-  //       callback(null, categoryId);
-  //     }
-  //   });
-  // }
   
 
   export function insertPosts(req, res) {
@@ -124,7 +160,7 @@ export function getCategory(req ,res){
 
 export function getAllCategories(req ,res){
 
-  
+   
   connection.query('SELECT * FROM category', (err, categories, fields) => {
     if (err) throw err;
 
@@ -133,6 +169,72 @@ export function getAllCategories(req ,res){
     res.render('post', { categories });
   });
 }
+
+export function updateCategory(req, res) {
+  const categoryId = req.params.id; 
+  const updatedCategoryData = req.body; // Assuming you receive updated category data in the request body
+
+
+  connection.query(
+    'UPDATE category SET ? WHERE id = ?',
+    [updatedCategoryData, categoryId],
+    (err, result) => {
+      if (err) {
+        console.error('Error updating category:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+        return;
+      }
+
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: 'Category not found' });
+        return;
+      }
+
+      res.status(200).json({ message: 'Category updated successfully' });
+    }
+  );
+}
+
+
+// export function appendCategory() {
+
+//   console.log('n,,,,,,,,,,,,,,,,nnnnnnnnnnnnnnnnnn');
+
+//   let selectedCategories = [];
+
+//   const categorySelect = document.getElementById('categorySelect');
+
+//   const selectedCategoriesDiv = document.getElementById('selectedCategories');
+
+//   categorySelect.addEventListener('change', function () {
+//     // Get the selected option
+//     const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+
+//     if (!selectedCategories.includes(selectedOption.value)) {
+
+//       selectedCategories.push(selectedOption.value);
+
+//       // Clear the current content of the container
+//       selectedCategoriesDiv.innerHTML = '';
+
+//       // Iterate through the selected categories and create elements to display them
+
+//       selectedCategories.forEach(categoryValue => {
+//         const categoryElement = document.createElement('span');
+//         categoryElement.textContent = categoryValue;
+//         categoryElement.classList.add('selected-category');
+//         selectedCategoriesDiv.appendChild(categoryElement);
+//       });
+
+//       console.log(selectedCategories);
+
+//       render('post', {selectedCategories})
+//     }
+//     appendCategory()
+//   });
+// }
+
+
 
 
 
