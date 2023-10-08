@@ -80,9 +80,9 @@ app.post('/category', insertCategory);
 
 
 
-// app.get('/postDetails', (req, res) => {
-//     res.render('postDetails');
-// });
+app.get('/Contact', (req, res) => {
+    res.render('contact');
+});
 
 
 
