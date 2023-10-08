@@ -21,19 +21,6 @@ connection.connect()
 
 
 
-// export function getPosts(req, res) {
-//     connection.query('SELECT post.*, category.* FROM post INNER JOIN post_category ON post.id = post_category.post_id INNER JOIN category ON post_category.category_id = category.id;', (err, posts, fields) => {
-//       if (err) throw err;
-    
-  
-//       console.log(`Number of posts: ${posts.length}`);
-//     console.log(posts);
-  
-//       res.render('index', { posts }); 
-//     });
-//   }
-
-
 
 export function getPosts(req, res ) {
 
@@ -45,7 +32,6 @@ export function getPosts(req, res ) {
   if (req.params.cat) {
       query += ` WHERE category.category_name = '${req.params.cat}'`;
   }
-
 
   const searchValue = req.query.search;
   
@@ -77,8 +63,6 @@ export function getPosts(req, res ) {
       res.render('index', { posts });
   });
 }
-
-
 
 
 
@@ -196,80 +180,4 @@ export function updateCategory(req, res) {
 }
 
 
-// export function appendCategory() {
-
-//   console.log('n,,,,,,,,,,,,,,,,nnnnnnnnnnnnnnnnnn');
-
-//   let selectedCategories = [];
-
-//   const categorySelect = document.getElementById('categorySelect');
-
-//   const selectedCategoriesDiv = document.getElementById('selectedCategories');
-
-//   categorySelect.addEventListener('change', function () {
-//     // Get the selected option
-//     const selectedOption = categorySelect.options[categorySelect.selectedIndex];
-
-//     if (!selectedCategories.includes(selectedOption.value)) {
-
-//       selectedCategories.push(selectedOption.value);
-
-//       // Clear the current content of the container
-//       selectedCategoriesDiv.innerHTML = '';
-
-//       // Iterate through the selected categories and create elements to display them
-
-//       selectedCategories.forEach(categoryValue => {
-//         const categoryElement = document.createElement('span');
-//         categoryElement.textContent = categoryValue;
-//         categoryElement.classList.add('selected-category');
-//         selectedCategoriesDiv.appendChild(categoryElement);
-//       });
-
-//       console.log(selectedCategories);
-
-//       render('post', {selectedCategories})
-//     }
-//     appendCategory()
-//   });
-// }
-
-
-
-
-
-  
-//   connection.end()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// connection.query('SELECT * from post', (err, rows, fields) => {
-//     if (err) throw err
-  
-//     console.log(rows)
-//   })
 

@@ -58,7 +58,7 @@ connection.connect();
 
 
 
-app.get('/:cat', getPosts);
+app.get('/filter/:cat', getPosts);
 app.get('/', getPosts);
 
 
