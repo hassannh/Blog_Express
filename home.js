@@ -231,28 +231,16 @@ export function getAllCategories(req ,res){
 export function updateCategory(req, res) {
 
 
-  const info = req.body
+  const categoryId  = req.params.categoryId
 
-  console.log(info);
-
-
-  // const { category_id, new_category_name = "sidati" } = req.body;
-
-  let category_id 
   let new_category_name = "sidati"
 
-  // let info = category_id
+  console.log(categoryId);
+  console.log(new_category_name);
 
-  // info = req.body
-
-
-  // console.log(category_id, new_category_name);
-
-  console.log(new_category_name );
-  console.log(info );
 
   const updateQuery = 'UPDATE category SET category_name = ? WHERE id = ?';
-  const values = [new_category_name , category_id];
+  const values = [new_category_name , categoryId];
 
   connection.query(updateQuery, values, (err, result) => {
     if (err) {
@@ -270,6 +258,7 @@ export function updateCategory(req, res) {
 
 
 export function deleteCategory(req, res) {
+
   const categoryId = req.params.categoryId; 
 
   console.log(categoryId);

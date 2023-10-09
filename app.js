@@ -108,7 +108,7 @@ app.post('/category', insertCategory);
 
 app.get('/delete_category/:categoryId', deleteCategory);
 
-app.get('/update_category/:categoryName', updateCategory);
+app.get('/update_category/:categoryId', updateCategory);
 
 // /delete-category
 
