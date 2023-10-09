@@ -1,6 +1,6 @@
 
-import { render } from "ejs";
 import mysql from "mysql2"
+// import {database} from './app.js'
 
 
 const connection = mysql.createConnection({
@@ -24,7 +24,7 @@ connection.connect()
 
 export function getPosts(req, res ) {
 
-  console.log("im in");
+  // console.log("im in");
 
   let query = 'SELECT post.*, category.* FROM post INNER JOIN post_category ON post.id = post_category.post_id INNER JOIN category ON post_category.category_id = category.id';
 
@@ -65,10 +65,7 @@ export function getPosts(req, res ) {
 }
 
 
-
-
-
-  export  function getOnePost(req, res){
+export  function getOnePost(req, res){
     console.log(res.params);
     const postId = req.params.postId;
 
@@ -85,22 +82,93 @@ export function getPosts(req, res ) {
 
   
 
-  export function insertPosts(req, res) {
-    const { title, description, author, picture, category_id } = req.body;
+  // export function insertPosts(req, res) {
+  //   const { title, description, author, picture, category_id } = req.body;
   
-    const post = 'INSERT INTO post (title, description, author, picture, category_id) VALUES (?, ?, ?, ?, ?)';
-    const values = [title, description, author, picture, category_id];
+  //   const post = 'INSERT INTO post (title, description, author, picture, category_id) VALUES (?, ?, ?, ?, ?)';
+  //   const values = [title, description, author, picture, category_id];
   
-    connection.query(post, values, (err, result) => {
+  //   connection.query(post, values, (err, result) => {
+  //     if (err) {
+  //       console.error('Error inserting data:', err);
+  //       res.status(500).send('Error inserting data');
+  //     } else {
+  //       console.log('Data inserted successfully:', result);
+  //       res.redirect('/');
+  //     }
+  //   });
+  // }
+
+
+
+
+export function insertPosts(req,res ,callback) {
+
+
+  const request = req.body;
+
+  console.log(request);
+  
+  // const { category_name } = req.body;
+console.log('Category name from request:', category_name);
+
+
+  const getCategoryName = 'SELECT id FROM category WHERE category_name = ?';
+
+  connection.query(getCategoryName, [category_name], (err, result) => {
+
+      console.log('result', result);
+
       if (err) {
-        console.error('Error inserting data:', err);
-        res.status(500).send('Error inserting data');
-      } else {
-        console.log('Data inserted successfully:', result);
-        res.redirect('/');
+          console.error('Error retrieving category ID: ' + err.message);
+          return callback(err);
       }
-    });
-  }
+
+      if (result.length === 0) {
+          console.error('Category not found');
+          return callback(new Error('Category not found'));
+      }
+
+      const categoryId = result[0].id;
+
+
+      console.log(categoryId);
+
+      
+      const insertPostSql = 'INSERT INTO post (title, description, date, author, picture) VALUES (?, ?, ?, ?, ?)';
+      const postValues = [title, description, date, author, picture];
+
+      connection.query(insertPostSql, postValues, (err, postResult) => {
+          if (err) {
+              console.error('Error inserting post: ' + err.message);
+              return callback(err);
+          }
+
+
+          console.log('Inserted post with ID ' + postResult.insertId);
+
+
+
+          // Now, insert the association into the 'Post_category' table
+          const insertPostCategory = 'INSERT INTO Post_category (post_id, category_id) VALUES (?, ?)';
+          const categoryValues = [postResult.insertId, categoryId];
+
+          connection.query(insertPostCategory, categoryValues, (err) => {
+              if (err) {
+                  console.error('Error associating category with post: ' + err.message);
+                  return callback(err);
+              }
+              console.log('Associated category with post');
+              callback(null, postResult.insertId);
+          });
+      });
+  });
+
+  // res.redirect('/');
+}
+
+
+
   
 
 /////////////////////////////////////POST CRUD END ////////////////////////////////////
@@ -112,7 +180,10 @@ export function getPosts(req, res ) {
 
 
 export function insertCategory(req, res){
-  const {category_name } = req.body;
+  const {category_name} = req.body;
+
+  console.log(category_name);
+
   const category = 'INSERT INTO category (category_name) VALUES (?)';
   const values = [category_name];
 
@@ -154,30 +225,70 @@ export function getAllCategories(req ,res){
   });
 }
 
+
+
+
 export function updateCategory(req, res) {
-  const categoryId = req.params.id; 
-  const updatedCategoryData = req.body; // Assuming you receive updated category data in the request body
 
 
-  connection.query(
-    'UPDATE category SET ? WHERE id = ?',
-    [updatedCategoryData, categoryId],
-    (err, result) => {
-      if (err) {
-        console.error('Error updating category:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-        return;
-      }
+  const info = req.body
 
-      if (result.affectedRows === 0) {
-        res.status(404).json({ error: 'Category not found' });
-        return;
-      }
+  console.log(info);
 
-      res.status(200).json({ message: 'Category updated successfully' });
+
+  // const { category_id, new_category_name = "sidati" } = req.body;
+
+  let category_id 
+  let new_category_name = "sidati"
+
+  // let info = category_id
+
+  // info = req.body
+
+
+  // console.log(category_id, new_category_name);
+
+  console.log(new_category_name );
+  console.log(info );
+
+  const updateQuery = 'UPDATE category SET category_name = ? WHERE id = ?';
+  const values = [new_category_name , category_id];
+
+  connection.query(updateQuery, values, (err, result) => {
+    if (err) {
+      console.error('Error updating data:', err);
+      res.status(500).send('Error updating data');
+    } else {
+      console.log('Data updated successfully:', result);
+      res.redirect('/category');
     }
-  );
+  });
 }
+
+
+
+
+
+export function deleteCategory(req, res) {
+  const categoryId = req.params.categoryId; 
+
+  console.log(categoryId);
+
+  const deleteQuery = 'DELETE FROM category WHERE id = ?'
+  const values = [categoryId];
+
+  connection.query(deleteQuery, values, (err, result) => {
+    if (err) {
+      console.error('Error deleting data:', err);
+      res.status(500).send('Error deleting data');
+    } else {
+      console.log('Data deleted successfully:', result);
+      res.redirect('/category');
+    }
+  });
+}
+
+
 
 
 
